@@ -1,0 +1,189 @@
+{
+  "name": "claude-usage-monitor",
+  "displayName": "Claude Usage Monitor",
+  "description": "Production-ready VS Code extension displaying Claude 5-hour and weekly usage limits and reset times directly in the status bar.",
+  "version": "1.0.2",
+  "publisher": "anthropic-tools",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/developer/claude-usage-monitor"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "icon": "media/icon.png",
+  "categories": [
+    "Other",
+    "Productivity"
+  ],
+  "keywords": [
+    "claude",
+    "claude-code",
+    "usage",
+    "rate-limit",
+    "limits",
+    "monitor",
+    "status-bar"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "claudeUsage.refresh",
+        "title": "Claude Usage: Refresh",
+        "category": "Claude Usage"
+      },
+      {
+        "command": "claudeUsage.showDetails",
+        "title": "Claude Usage: Show Detailed Usage",
+        "category": "Claude Usage"
+      },
+      {
+        "command": "claudeUsage.toggleStatusBar",
+        "title": "Claude Usage: Toggle Status Bar Indicators",
+        "category": "Claude Usage"
+      },
+      {
+        "command": "claudeUsage.openSettings",
+        "title": "Claude Usage: Open Settings",
+        "category": "Claude Usage"
+      },
+      {
+        "command": "claudeUsage.resetCache",
+        "title": "Claude Usage: Reset Cache and Refresh",
+        "category": "Claude Usage"
+      },
+      {
+        "command": "claudeUsage.signIn",
+        "title": "Claude Usage: Sign In / Account Guidance",
+        "category": "Claude Usage"
+      },
+      {
+        "command": "claudeUsage.setToken",
+        "title": "Claude Usage: Enter OAuth / Session Token Manually",
+        "category": "Claude Usage"
+      },
+      {
+        "command": "claudeUsage.clearToken",
+        "title": "Claude Usage: Clear Stored Credentials",
+        "category": "Claude Usage"
+      }
+    ],
+    "configuration": {
+      "title": "Claude Usage Monitor",
+      "properties": {
+        "claudeUsage.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable or disable the Claude Usage Monitor extension."
+        },
+        "claudeUsage.show5HourUsage": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the 5-hour usage allowance in the VS Code status bar."
+        },
+        "claudeUsage.showWeeklyUsage": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the weekly usage allowance in the VS Code status bar."
+        },
+        "claudeUsage.refreshInterval": {
+          "type": "number",
+          "default": 60,
+          "minimum": 15,
+          "maximum": 3600,
+          "description": "Usage refresh interval in seconds (default: 60s, minimum: 15s)."
+        },
+        "claudeUsage.warningThreshold": {
+          "type": "number",
+          "default": 25,
+          "minimum": 1,
+          "maximum": 99,
+          "description": "Remaining percentage threshold below which a warning indicator is displayed."
+        },
+        "claudeUsage.criticalThreshold": {
+          "type": "number",
+          "default": 10,
+          "minimum": 1,
+          "maximum": 99,
+          "description": "Remaining percentage threshold below which a critical indicator is displayed."
+        },
+        "claudeUsage.displayMode": {
+          "type": "string",
+          "enum": [
+            "both",
+            "consumed",
+            "remaining"
+          ],
+          "enumDescriptions": [
+            "Display both consumed and remaining percentages (e.g. 'Claude 5h: 53% used (47% left)')",
+            "Display consumed/used usage percentage only (e.g. 'Claude 5h: 53% used')",
+            "Display remaining allowance percentage only (e.g. 'Claude 5h: 47% remaining')"
+          ],
+          "default": "both",
+          "description": "Choose whether to display both consumed and remaining, consumed only, or remaining only in the status bar."
+        },
+        "claudeUsage.showIcon": {
+          "type": "boolean",
+          "default": true,
+          "description": "Display the Claude AI logo icon in the status bar."
+        },
+        "claudeUsage.statusBarLayout": {
+          "type": "string",
+          "enum": [
+            "single",
+            "split"
+          ],
+          "enumDescriptions": [
+            "Single compact status bar item combining both 5-hour and weekly limits (e.g. '$(sparkle) 5h: 53%, Wk: 75%')",
+            "Separate status bar items for 5-hour and weekly limits"
+          ],
+          "default": "single",
+          "description": "Choose between a space-saving single combined status bar item or two separate items."
+        },
+        "claudeUsage.autoRefresh": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable automatic periodic background usage refresh."
+        },
+        "claudeUsage.statusBarFormat": {
+          "type": "string",
+          "enum": [
+            "compact",
+            "detailed",
+            "icon-only"
+          ],
+          "enumDescriptions": [
+            "Compact display (e.g. 'Claude 5h: 78%')",
+            "Detailed display with reset time (e.g. 'Claude 5h: 78% (resets in 2h)')",
+            "Icon and percentage only (e.g. '$(history) 78%')"
+          ],
+          "default": "compact",
+          "description": "Status bar label presentation format."
+        },
+        "claudeUsage.customCredentialsPath": {
+          "type": "string",
+          "default": "",
+          "description": "Optional custom file path to Claude Code credentials (.credentials.json)."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "node ./out/test/runTests.js",
+    "package": "vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.9.2",
+    "typescript": "^5.3.3"
+  }
+}
